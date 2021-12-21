@@ -88,6 +88,7 @@ exports.startWatch = function startWatch(logger, platform, ip_address) {
   }
   setTimeout(function() { // avoid potential stdio conflict with ti build (hack at the moment)
     logger.info("Starting Watch...");
+    logger.info(ip_address);
     var watch = spawn('ts', args, {stdio: 'inherit'});
     watch.on('exit', function() {
       logger.error("TiShadow watch exited.");

@@ -18,6 +18,7 @@ var sockets = require('./support/sockets');
 var Logger = require('./logger');
 var config = require('../cli/support/config');
 var bodyParser = require('body-parser');
+var qrcode = require('qrcode-terminal');
 
 var server = module.exports = http.createServer(app);
 
@@ -58,13 +59,18 @@ function isUp() {
       address = "localhost";
     }
     Logger.debug("TiShadow server started. Go to http://"+ address + ":" + port);
+
     if (config.host !== "localhost") {
       Logger.debug("connect to " + config.host + ":" + port);
+      Logger.debug("scan the following code from the TiShadow app");
+      Logger.debug(qrcode.generate('http://'+ config.host + ':' + port, {small: true}));
     } else {
       _.each(os.networkInterfaces(), function(iface,dev_name){
         iface.forEach(function(i) {
           if (i.family === "IPv4" && !i.internal) {
             Logger.debug("connect to " + i.address + ":" + port);
+            Logger.debug("scan the following code from the TiShadow app");
+            Logger.debug(qrcode.generate('http://'+ i.address + ':' + port, {small: true}));
           }
         });
       });
